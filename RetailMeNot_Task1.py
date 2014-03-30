@@ -20,7 +20,7 @@ for line in textFile:
     tempWordList=[]
     for word in line:
         if((word=='$') or (word=='%') or (len(wn.synsets(word))!=0)
-                                          or (re.search(r'(.\...)' , word) !=None)):
+                                          or (re.search(r'(.\.[a-zA-Z][a-zA-Z])' , word) !=None)):
             tempWordList.append(word)
     wordList = wordList + tempWordList
     if "guitar" in line:
@@ -33,3 +33,10 @@ print typeOfGuitar
 freqdist2 = FreqDist(wordList) ## Frequency distribution of words across the deals ##
 freqdist2 .plot (40, cumulative =False)
 sorted_fredist  = sorted(freqdist2.iteritems(), key=operator.itemgetter(1))
+f= open('RMN_WORD_FREQ_DATA.txt','w')
+i=0
+while(i!=len(sorted_fredist)):
+    f.write(str(sorted_fredist[i][0]) + ", " + str(sorted_fredist[i][1]) + "\n")
+    i=i+1
+
+f.close()
