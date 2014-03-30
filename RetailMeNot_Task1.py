@@ -9,15 +9,20 @@ from RetailMeNotHeader import *
 from RetailMeNotFunctions import *
 
 ## stopWords : List of non informative words ##
-stopWords = open('stop_words.txt', 'r').read().split()
-textFile = open("RetailMeNotDeals.txt", "r") ## Deals.txt##
-wordList =[]
+stopWords = open('data/stop_words.txt', 'r').read().split()
+textFile = open('data/RetailMeNotDeals.txt', 'r') ## Deals.txt##
+wordList =[] ##maintain an all words list for frequency distribution analysis
 typeOfGuitar=set() ## maintains a type unique guitar type ##
 
 
 for line in textFile:
     line = stopwords_remove(re.sub(r"(\.+){2,}|([\.][\s])|(\.$)", " ", line.rstrip('\n')), stopWords)
-    wordList = wordList + line
+    tempWordList=[]
+    for word in line:
+        if((word=='$') or (word=='%') or (len(wn.synsets(word))!=0)
+                                          or (re.search(r'(.\...)' , word) !=None)):
+            tempWordList.append(word)
+    wordList = wordList + tempWordList
     if "guitar" in line:
         GuitarType = findTypeGuitar(line)
         if GuitarType != '':
