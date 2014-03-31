@@ -58,12 +58,15 @@ def newFeatureSet(document_words, dealsKeyWords, stopWords):
     word_features = stopwords_remove(document_words, stopWords)
     word_features = [stem(x) for x in word_features]
     features['lengthOfDeal'] = len(word_features)
-    features['keyword']=False
+    for term in dealsKeyWords:
+        features[term]=False
+#    features['keyword']=False
     features['$Present'] = False
     features['%Present']=False
     for word in word_features:
         if(word in dealsKeyWords):
-            features['keyword']=True
+            features[word]=True
+#            features['keyword']=True
         if(word =='$'):
             features['$Present']=True
         if(word=='%'):

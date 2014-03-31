@@ -10,11 +10,14 @@
 from RetailMeNotHeader import *
 from RetailMeNotFunctions import *
 
-stopWords = open('stop_words.txt', 'r').read().split()
-badDeals = open('RetailMeNotBadDeals.txt','r') ## file handle to read BadDeals.txt ##
-goodDeals = open('RetailMeNotGoodDeals.txt','r') ## file handle to read GoodDeals.txt ##
-testDeals = open('RetailMeNotTestDeals.txt','r') ## file handle to read TestDeals.txt ##
-testFileOutput = open('RetailMeNotOutputFile.txt', 'w') ## Ouput file with classified deals ##
+stopWords = open('data/stop_words.txt', 'r').read().split()
+badDeals = open('data/RetailMeNotBadDeals.txt','r') ## file handle to read BadDeals.txt ##
+goodDeals = open('data/RetailMeNotGoodDeals.txt','r') ## file handle to read GoodDeals.txt ##
+testDeals = open('data/RetailMeNotTestDeals.txt','r') ## file handle to read TestDeals.txt ##
+testFileOutput = open('output/RetailMeNotOutputFile.txt', 'w') ## Ouput file with classified deals ##
+
+allDeals = open('data/RetailMeNotDeals.txt','r')
+allDealList=[]
 goodDealList=[]
 badDealList=[]
 allTopics=[]
@@ -25,21 +28,24 @@ dealsKeyWords = ['off','offer','deal','save','free','sale','clearance','coupon',
 dealsKeyWords = [stem(x) for x in dealsKeyWords]## stemming ##
 for line in goodDeals:
     goodDealList.append(line)
+for line in allDeals:
+    allDealList.append(line)
 
 for line in badDeals:
     badDealList.append(line)
 
 ### Finding important words contributing to the most probable topic(Group) ################
-fullText=[stopwords_remove(document,stopWords) for document in goodDealList]
+#fullText=[stopwords_remove(document,stopWords) for document in goodDealList]
+fullText=[stopwords_remove(document,stopWords) for document in allDealList]
 dictionary = corpora.Dictionary(fullText)
 corpus = [dictionary.doc2bow(text) for text in fullText]
 tfidf = models.TfidfModel(corpus) 
 corpusTfidf = tfidf[corpus]
-numberOfTopics = 4
+numberOfTopics = 2
 lda = models.LdaModel(corpusTfidf, id2word=dictionary, num_topics=numberOfTopics)
 
 for i in range(0, numberOfTopics):
-    temp = lda.show_topic(i, 10)## we choose top 10 words this time ##
+    temp = lda.show_topic(i, 50)## we choose top 10 words this time ##
     terms = []
     for term in temp:
         terms.append(term[1])

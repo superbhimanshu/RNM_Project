@@ -30,7 +30,7 @@ numberOfTopics = 5  ## Number of topics we want to estimate ##
 lda = models.LdaModel(corpusTfidf, id2word=dictionary, num_topics=numberOfTopics)
 
 for i in range(0, numberOfTopics):
-    temp = lda.show_topic(i, 10)## to find 5 most contributing words to the topic ##
+    temp = lda.show_topic(i, 10)## to find 10 most contributing words to the topic ##
     terms = []
     for term in temp:
         terms.append(term[1])
