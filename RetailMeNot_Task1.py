@@ -16,9 +16,11 @@ typeOfGuitar=set() ## maintains a type unique guitar type ##
 
 
 for line in textFile:
+    ## removing full stops and other sequence of "."
     line = stopwords_remove(re.sub(r"(\.+){2,}|([\.][\s])|(\.$)", " ", line.rstrip('\n')), stopWords)
     tempWordList=[]
     for word in line:
+        ## regex to filter our website address as it has important information
         if((word=='$') or (word=='%') or (len(wn.synsets(word))!=0)
                                           or (re.search(r'(.\.[a-zA-Z][a-zA-Z])' , word) !=None)):
             tempWordList.append(word)

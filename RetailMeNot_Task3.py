@@ -24,7 +24,8 @@ allTopics=[]
 badTrainingDeals =[]
 goodTrainingDeals=[]
 trainingDeals=[]
-dealsKeyWords = ['off','offer','deal','save','free','sale','clearance','coupon','code'] ## keyword list for feature extraction ##
+dealsKeyWords = ['off','offer','deal','save','free','sale','clearance','coupon','code'] ## keyword list for feature extraction.
+## This list is used for initial testing and classification. In later tuning, this has been ignored 
 dealsKeyWords = [stem(x) for x in dealsKeyWords]## stemming ##
 for line in goodDeals:
     goodDealList.append(line)
@@ -53,17 +54,21 @@ for i in range(0, numberOfTopics):
 #   print "terms for topic " + str(i) +  '  '+ ", ".join(terms) ### for debugging
   
 
-maximumProbableTopic = allTopics[max(lda[corpus[1]],key=itemgetter(1))[0]] ## most probable topic's keywords are also considered as features##
+maximumProbableTopic = allTopics[max(lda[corpus[1]],key=itemgetter(1))[0]] ## most probable topic's keywords
+                                                                           ## are also considered as features##
 maximumProbableTopic = [stem(x) for x in maximumProbableTopic]
-dealsKeyWords = set(dealsKeyWords + maximumProbableTopic)## making set to have unique keywords ##
 
+#dealsKeyWords = set(dealsKeyWords + maximumProbableTopic)## making set to have unique keywords
+                                                          ## using predfined keywords list also ##
+dealsKeyWords = set(maximumProbableTopic)##without using predefined keywords list
 ## arranging data for training ##
 for line in badDealList:
+    ## removing "." but preserving one in website addresses
     line = stopwords_remove(re.sub(r"(\.+){2,}|([\.][\s])|(\.$)", " ", line.rstrip('\n')), stopWords)
     temp = (line,'bad')
     badTrainingDeals.append(temp)
 
-for line in goodDealList:
+for line in goodDealList: 
     line = stopwords_remove(re.sub(r"([\.][\s])|(\.$)", " ", line.rstrip('\n')),stopWords)
     temp = (line,'good')
     goodTrainingDeals.append(temp)

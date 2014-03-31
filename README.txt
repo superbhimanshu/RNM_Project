@@ -20,7 +20,11 @@ for further processing. This file can also be used for implementing caching for 
 
 5. RetailMeNot_Task2.py- Topic modeling using LDA technique has been done in this file as per requirements of 
 Task2
-6. RetailMeNot_Task3.py - Defined number of topics to be 4. Topic modeling using LDA was implemented and most informative words from the most probable topic were selected as keywords. These keywords were added to another list of predefined keywords like "deals","offer", "coupons", "save", "bogo" etc. Implemented classification algorithm using naive bayesian classifier, feature extractor with four defined features(length of data, $ sign is present or not, % sign is present or not, keyword present or not) and classifier evaluator(Precision, Recall and F-Test).
+6. RetailMeNot_Task3.py - 
+
+Attempt 1:
+----------
+Defined number of topics to be 4. Topic modeling using LDA was implemented and most informative words from the most probable topic were selected as keywords. These keywords were added to another list of predefined keywords like "deals","offer", "coupons", "save", "bogo" etc. Implemented classification algorithm using naive bayesian classifier, feature extractor with four defined features(length of data, $ sign is present or not, % sign is present or not, keyword present or not) and classifier evaluator(Precision, Recall and F-Test).
 ANSWERS:-
 Accuracy :  0.8
 Most Informative Features
@@ -38,9 +42,9 @@ Our classifier is not very general because we used feature extractor specific to
 Classification can surely be improved by increasing the amount of training data. Moreover, if we can increase the number of 
 relevant features it will surely enhance the performance.
 
-Increasing Features..
----------------------
-Decreased the number of topics to 2. And 50 most informative words were selected from the most probable topic. After stemming each word is considered as a feature. Here is the outcome.
+Attempt 2 Increasing Features.
+-----------------------------
+Decreased the number of topics to 2. And 50 most informative words were selected from the most probable topic. These words were added to a predefined keywords list. After stemming each word is considered as a feature. Here is the outcome.
 Most Informative Features
                 %Present = True             good : bad    =      2.4 : 1.0
                        % = True             good : bad    =      2.4 : 1.0
@@ -61,5 +65,21 @@ relevant features it will surely enhance the performance.
 Word Sense Disambiguation can be implemented to find the proper context of each word present in the data and we can  
 estimate the closeness of the words with keywords like "deals", "offer" and "percentage off" etc.
 
+Attempt 3 Tuning features again:-
+---------------------------------
+Decreased the number of topics to 2. And 50 most informative words were selected from the most probable topic. After stemming each word is considered as a feature. This time no predefined keyword list was used. Here is the outcome.
 
+Accuracy :  0.9
+Most Informative Features
+            lengthOfDeal = 6                good : bad    =      2.1 : 1.0
+                $Present = True             good : bad    =      2.1 : 1.0
+                %Present = True             good : bad    =      1.9 : 1.0
+                %Present = False             bad : good   =      1.2 : 1.0
+good precision: 0.904761904762
+good recall: 0.904761904762
+good F-measure: 0.904761904762
+bad precision: 0.894736842105
+bad recall: 0.894736842105
+bad F-measure: 0.894736842105
 
+We can clearly see the improvement in classification. This time our classifier in quite general as we didnt use any predefined keyword list and all the features are extracted computationally. So this can be used on any problem statement.
